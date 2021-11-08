@@ -59,7 +59,7 @@ function App() {
                         return (
                           <div
                             key={item.id}
-                            className={index <= 4 ? "section" : "hidden"}
+                            className={index <= 5 ? "section" : "hidden"}
                           >
                             <div className="item">
                               <h3>{item.title}</h3>
