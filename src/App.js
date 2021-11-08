@@ -11,12 +11,14 @@ function App() {
       const response = await axios.get(
         "https://copy-delivroo-backend.herokuapp.com/"
       );
-      setData(response.data);
+      setData(response.data.restaurant);
       setIsLoading(false);
     };
 
     fetchData();
   }, []);
+
+  //return isLoading ? <div>""</div> : <div>{data}</div>;
 
   return isLoading ? <div>""</div> : <div>{Object.keys(data)}</div>;
 }
