@@ -19,12 +19,13 @@ const PaymentBox = ({ bill, setBill, counter, setCounter }) => {
         <button>Valider votre panier</button>
       </div>
 
-      <div>
-        {/*  <Counters
+      <div className="test2">
+        {console.log("mon compteur", counter)}
+        <Counters
           counter={counter}
           handleMoins={handleMoins}
           handlePlus={handlePlus}
-        />*/}
+        />
         {bill.map((item, index) => {
           return (
             <div key={index}>
