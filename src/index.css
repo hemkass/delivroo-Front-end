@@ -80,16 +80,17 @@ main {
   grid-template-columns: 1fr 300px;
   column-gap: 50px;
 }
-.section {
+.sectionblock {
   display: flex;
   width: 350px;
+  background-color: blueviolet;
 }
 
-.section:nth-child(2n + 1) {
+.sectionblock:nth-child(2n + 1) {
   margin-right: 50px;
 }
 
-.section img {
+.sectionblock img {
   width: 100px;
   height: 100px;
   border-radius: 10px;
@@ -98,10 +99,7 @@ main {
   image-rendering: -webkit-optimize-contrast;
 }
 
-.sideBar {
-}
-
-.test {
+.category {
   width: 750px;
   display: flex;
   flex-wrap: wrap;
@@ -135,4 +133,23 @@ main {
   font-size: 0.9em;
   font-weight: 600;
   line-height: 12px;
+}
+
+.sideBar {
+  display: flex;
+
+  justify-content: center;
+}
+
+.paymentBox {
+  padding: 20px 0px 20px 0px;
+  flex-direction: column;
+  border-radius: 10px;
+  box-shadow: 1px 1px 3px 1px grey;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  width: 90%;
+  background-color: white;
+  align-self: flex-start;
 }

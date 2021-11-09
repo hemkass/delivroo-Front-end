@@ -1,99 +1,87 @@
 import "./App.css";
 import axios from "axios";
+
+import Header from "./components/Header";
+import Restaurant from "./components/Restaurant";
+import Category from "./components/Category";
+import PaymentBox from "./components/PaymentBox";
+
 import { useState, useEffect } from "react";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 library.add(faStar);
 
 function App() {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const [bill, setBill] = useState([]);
+  const [counter, setCounter] = useState([1]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get(
-        "https://copy-delivroo-backend.herokuapp.com/"
-      );
-      setData(response.data);
-      setIsLoading(false);
+      try {
+        const response = await axios.get(
+          "https://copy-delivroo-backend.herokuapp.com/"
+        );
+        setData(response.data);
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error.data);
+      }
     };
 
     fetchData();
   }, []);
 
-  //return isLoading ? <div>""</div> : <div>{data}</div>;
+  const handleClick = (title, price, id) => {
+    console.log("id", id);
+    if (bill.indexOf(id) === -1) {
+      const newBill = [...bill];
+      newBill.push(id, title, price);
+      setBill(newBill);
+      const newCounter = [...counter];
+      newCounter.push(1);
+      console.log("newCounter", newCounter);
+    } else {
+      const result = counter + 1;
+      const newBill = [...bill];
+      console.log("prix", bill[bill.indexOf(id) + 2]);
+      newBill[bill.indexOf(id) + 2] =
+        Number(newBill[bill.indexOf(id) + 2]) + Number(price);
+
+      setBill(newBill);
+      setCounter(result);
+    }
+  };
+  // console.log(index);
 
   return isLoading ? (
-    <div>""</div>
+    <p>"Loading"</p>
   ) : (
     <div>
-      <header>
-        <img
-          className="logo"
-          src="https://res.cloudinary.com/dyj84szrx/image/upload/v1636392000/logo_ahs9eg.svg"
-        />
-      </header>
+      <Header />
       <div className="container">
-        <div className="restaurant">
-          <div className="bloc1">
-            <h1>{data.restaurant.name}</h1>
-            <p>{data.restaurant.description}</p>
-          </div>
-          <div className="bloc2">
-            <img src={data.restaurant.picture} alt="repas proposé"></img>
-          </div>
-        </div>
+        <Restaurant data={data} />
 
         <main>
           <div className="leftBar">
-            {data.categories.map((item, index) => {
-              {
-                return (
-                  <div key={index} className={index < 2 ? "leftBar" : "hidden"}>
-                    <div>
-                      <h2>{item.name}</h2>
-                    </div>
-                    <div className="test">
-                      {data.categories[index].meals.map((item, index) => {
-                        return (
-                          <div
-                            key={item.id}
-                            className={index <= 5 ? "section" : "hidden"}
-                          >
-                            <div className="item">
-                              <h3>{item.title}</h3>
-                              <p className="sectionDescription">
-                                {item.description}
-                              </p>
-
-                              <p>
-                                <span className="price">{item.price} €</span>
-                                <span
-                                  className={
-                                    item.popular === true ? "popular" : "hidden"
-                                  }
-                                >
-                                  <FontAwesomeIcon icon="star"></FontAwesomeIcon>
-                                  populaire
-                                </span>
-                              </p>
-                            </div>
-                            {item.picture && (
-                              <div>
-                                <img src={item.picture} alt={item.title}></img>
-                              </div>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                );
-              }
+            {data.categories.map((elem, index) => {
+              return (
+                <div key={index}>
+                  <Category
+                    index={index}
+                    elem={elem}
+                    data={data}
+                    handleClick={handleClick}
+                  />
+                </div>
+              );
             })}
           </div>
-          <div className="sideBar"></div>
+          <div className="sideBar">
+            <PaymentBox bill={bill} counter={counter} setCounter={setCounter} />
+          </div>
         </main>
       </div>
     </div>
